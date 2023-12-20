@@ -22,8 +22,9 @@ lazy val `test-vite` = project.in(file("."))
         .withModuleSplitStyle(ModuleSplitStyle.SmallModulesFor(List("testvite")))
     },
 
-    // Depend on Laminar
-    libraryDependencies += "com.raquo" %%% "laminar" % "15.0.1",
+    // Depend on Slinky
+    libraryDependencies += "me.shadaj" %%% "slinky-core" % "0.7.3", // core React functionality, no React DOM
+    libraryDependencies += "me.shadaj" %%% "slinky-web" % "0.7.3", // React DOM, HTML and SVG tags
 
     // Tell ScalablyTyped that we manage `npm install` ourselves
     externalNpm := baseDirectory.value,
