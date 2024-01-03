@@ -5,23 +5,18 @@ This is an example of putting together:
 * [Scala.js](https://www.scala-js.org/)
 * [sbt](https://www.scala-sbt.org/)
 * [Vite](https://vitejs.dev/)
-* [Laminar](https://laminar.dev/)
-* [Chart.js](https://www.chartjs.org/), statically typed with [ScalablyTyped](https://scalablytyped.org/)
+* [Slinky](https://slinky.dev/)
 
 ## Install
 
-You need to explicitly install the following software:
-
-* sbt, as part of [getting started with Scala](https://docs.scala-lang.org/getting-started/index.html) (or if you prefer, through [its standalone download](https://www.scala-sbt.org/download.html))
-* [Node.js](https://nodejs.org/en/)
-
-Other software will be downloaded automatically by the commands below.
+Install [nix](https://nixos.org/download).
 
 ## Prepare
 
 Before doing anything, including before importing in an IDE, run
 
 ```
+# nix-shell .
 $ npm install
 ```
 
