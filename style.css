@@ -6,3 +6,9 @@
   color: #2c3e50;
   margin-top: 60px;
 }
+
+.ClickArea {
+  padding: 10px;
+  background-color: #99aacc;
+  font-weight: bold;
+}

@@ -12,6 +12,7 @@ import org.scalajs.dom.Event
 import org.scalajs.dom.HTMLButtonElement
 import org.scalajs.dom.HTMLDivElement
 import slinky.web.SyntheticMouseEvent
+import slinky.web.SyntheticKeyboardEvent
 
 object Main {
 
@@ -27,10 +28,18 @@ object Main {
     dom.window.alert("handleClick bubbling phase")
   }
 
+  def onKeyDownCaptureHandler(event: SyntheticKeyboardEvent[HTMLDivElement]): Unit = { dom.window.alert("onKeyDownCapture") }
+  def onKeyDownHandler(event: SyntheticKeyboardEvent[HTMLDivElement]): Unit = { dom.window.alert("onKeyDown") }
+  def onKeyPressCaptureHandler(event: SyntheticKeyboardEvent[HTMLDivElement]): Unit = { dom.window.alert("onKeyPressCapture") }
+  def onKeyPressHandler(event: SyntheticKeyboardEvent[HTMLDivElement]): Unit = { dom.window.alert("onKeyPress") }
+  def onKeyUpCaptureHandler(event: SyntheticKeyboardEvent[HTMLDivElement]): Unit = { dom.window.alert("onKeyUpCapture") }
+  def onKeyUpHandler(event: SyntheticKeyboardEvent[HTMLDivElement]): Unit = { dom.window.alert("onKeyUp") }
+
+
   def main(args: Array[String]): Unit = {
     ReactDOM.render(
       div(className := "App")(
-        h1("3 phases of event propagation example"),
+        h2("3 phases of event propagation example"),
         div(onClick := (event => onClickHandlerCapturing(event)))(
           div(onClick := (event => onClickHandlerBubbling(event)))(
             div(onClick := (event => onClickHandlerBubbling(event)))(
@@ -41,18 +50,38 @@ object Main {
         h2("keyboard events"),
         ul(
           li(
-            input(onKeyDown := (event => { println("onKeyDown") })),
-            input(onKeyPress := (event => { println("onKeyPress") })),
-            input(onKeyUp := (event => { println("onKeyUp") }))
+            input(placeholder := "onKeyDown", onKeyDown := (event => { println("onKeyDown") })),
+            input(placeholder := "onKeyPress", onKeyPress := (event => { println("onKeyPress") })),
+            input(placeholder := "onKeyUp", onKeyUp := (event => { println("onKeyUp") }))
           ),
-          /// Following doesn't work but it should. ///
+          // doesn't work in Slinky v0.7.4
           li(
-            input(onKeyUpCapture := (event => { println("onKeyUpCapture") })),
-            input(onKeyPressCapture := (event => { println("onKeyPressCapture") })),
-            input(onKeyDownCapture := (event => { println("onKeyDownCapture") }))
+             input(placeholder := "onKeyUpCapture", onKeyUpCapture := (event => { println("onKeyUpCapture") })),
+             input(placeholder := "onKeyPressCapture", onKeyPressCapture := (event => { println("onKeyPressCapture") })),
+             input(placeholder := "onKeyDownCapture", onKeyDownCapture := (event => { println("onKeyDownCapture") }))
           )
-        )
-      ),
+        ),
+        // doesn't work in Slinky v0.7.4
+        h2("keyboard events propagation test"),
+        /**
+          *  This test required to click area and press key button
+          *  but UP events only works if cursor placed outside area where
+          *  browser popup window appears.
+          */
+        div(onKeyDownCapture := (event => onKeyDownCaptureHandler(event)),
+            onKeyUpCapture := (event => onKeyUpCaptureHandler(event)),
+            onKeyUp := (event => onKeyUpHandler(event))) {
+          div(onKeyDown := (event => onKeyDownHandler(event))) {
+            div(onKeyPressCapture := (event => onKeyPressCaptureHandler(event))) {
+                div(className := "ClickArea",
+                  // may not work without 'tabIndex',
+                  // see: https://stackoverflow.com/questions/43503964/onkeydown-event-not-working-on-divs-in-react
+                  tabIndex := -1,
+                  onKeyPress := (event => onKeyPressHandler(event))) { "Click here and then press any key" }
+              }
+            }
+          }
+        ),
       dom.document.getElementById("app")
     )
   }
