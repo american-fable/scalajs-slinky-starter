@@ -13,6 +13,7 @@ import org.scalajs.dom.HTMLButtonElement
 import org.scalajs.dom.HTMLDivElement
 import slinky.web.SyntheticMouseEvent
 import slinky.web.SyntheticKeyboardEvent
+import slinky.web.SyntheticInputEvent
 
 object Main {
 
@@ -39,6 +40,7 @@ object Main {
   def main(args: Array[String]): Unit = {
     ReactDOM.render(
       div(className := "App")(
+
         h2("3 phases of event propagation example"),
         div(onClick := (event => onClickHandlerCapturing(event)))(
           div(onClick := (event => onClickHandlerBubbling(event)))(
@@ -47,6 +49,7 @@ object Main {
             )
           )
         ),
+
         h2("keyboard events"),
         ul(
           li(
@@ -61,6 +64,7 @@ object Main {
              input(placeholder := "onKeyDownCapture", onKeyDownCapture := (event => { println("onKeyDownCapture") }))
           )
         ),
+
         // doesn't work in Slinky v0.7.4
         h2("keyboard events propagation test"),
         /**
@@ -73,15 +77,27 @@ object Main {
             onKeyUp := (event => onKeyUpHandler(event))) {
           div(onKeyDown := (event => onKeyDownHandler(event))) {
             div(onKeyPressCapture := (event => onKeyPressCaptureHandler(event))) {
-                div(className := "ClickArea",
-                  // may not work without 'tabIndex',
-                  // see: https://stackoverflow.com/questions/43503964/onkeydown-event-not-working-on-divs-in-react
-                  tabIndex := -1,
-                  onKeyPress := (event => onKeyPressHandler(event))) { "Click here and then press any key" }
-              }
+              div(className := "ClickArea",
+                // may not work without 'tabIndex',
+                // see: https://stackoverflow.com/questions/43503964/onkeydown-event-not-working-on-divs-in-react
+                tabIndex := -1,
+                onKeyPress := (event => onKeyPressHandler(event))) { "Click here and then press any key" }
             }
           }
-        ),
+        },
+
+        // doesn't work in Slinky v0.7.4
+        h2("onBeforeInput test"),
+        div() {
+          input(placeholder := "onBeforeInput",
+            onKeyDown := (event => { println("onKeyDown") }),
+            onKeyUpCapture := (event => { println(s"onKeyUp, key code:${event.keyCode}") }),
+            onBeforeInputCapture := (event => { println(s"onBeforeInputCapture, data: ${event.data}") }),
+            onInput := (event => { println(s"onInput") }),
+            onBeforeInput := (event => { println(s"onBeforeInput, data: ${event.data}") }))
+        }
+
+      ),
       dom.document.getElementById("app")
     )
   }

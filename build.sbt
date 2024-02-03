@@ -23,8 +23,8 @@ lazy val `test-vite` = project.in(file("."))
     },
 
     // Depend on Slinky
-    libraryDependencies += "me.shadaj" %%% "slinky-core" % "0.7.5-b12bd9d5+20240201-1708-SNAPSHOT", // core React functionality, no React DOM
-    libraryDependencies += "me.shadaj" %%% "slinky-web" % "0.7.5-b12bd9d5+20240201-1708-SNAPSHOT", // React DOM, HTML and SVG tags
+    libraryDependencies += "me.shadaj" %%% "slinky-core" % "0.7.5-b12bd9d5+20240201-1709-SNAPSHOT", // core React functionality, no React DOM
+    libraryDependencies += "me.shadaj" %%% "slinky-web" % "0.7.5-b12bd9d5+20240201-1709-SNAPSHOT", // React DOM, HTML and SVG tags
 
     // Tell ScalablyTyped that we manage `npm install` ourselves
     externalNpm := baseDirectory.value,
